@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/title"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="资产信息统计"
+            android:textColor="@color/white_255"
+            android:textSize="18dp" />
+    </android.support.v7.widget.Toolbar>
+    <LinearLayout
+        android:id="@+id/ll_stay_visit_selsect"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+        <!--筛选学校-->
+        <LinearLayout
+            android:id="@+id/ll_school_name"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center">
+            <CheckBox
+                android:id="@+id/cb_school_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:button="@null"
+                android:drawablePadding="10dp"
+                android:drawableRight="@drawable/seletor_stock_arrow"
+                android:gravity="center"
+                android:text="学校"
+                android:textColor="@drawable/seletor_text_stock"
+                android:textSize="15sp"/>
+        </LinearLayout>
+        <!--筛选内容-->
+        <LinearLayout
+            android:id="@+id/ll_statistics_name"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center">
+            <CheckBox
+                android:id="@+id/cb_statistics_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:button="@null"
+                android:drawablePadding="10dp"
+                android:drawableRight="@drawable/seletor_stock_arrow"
+                android:gravity="center"
+                android:text="统计选项"
+                android:textColor="@drawable/seletor_text_stock"
+                android:textSize="15sp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="统计信息如下："
+        android:layout_marginLeft="25dp"
+        android:textColor="#ec9a17"
+        android:textSize="18dp"/>
+
+    <lecho.lib.hellocharts.view.ColumnChartView
+        android:id="@+id/columnchart"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="15dp"
+        android:text="统计信息说明:\n资产统计：统计学校所有设备类型及数量。\n库存统计：统计已经在库存中还未被使用的设备及数量。\n价值统计：统计所有设备类型的价值总量。\n报废统计：统计学校已经报废的各设备类型及数量"/>
+
+</LinearLayout>
