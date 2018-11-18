@@ -1,6 +1,7 @@
 package com.pengllrn.tegm.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -34,15 +35,17 @@ import com.pengllrn.tegm.R;
 import com.pengllrn.tegm.bean.School;
 import com.pengllrn.tegm.constant.Constant;
 import com.pengllrn.tegm.gson.ParseJson;
-import com.pengllrn.tegm.internet.OkHttp;
 import com.pengllrn.tegm.utils.ActivityCollector;
 import com.pengllrn.tegm.utils.FileCache;
 import com.pengllrn.tegm.utils.SharedHelper;
 
+import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.List;
 
-import okhttp3.FormBody;
-import okhttp3.RequestBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -87,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
                         school = listSchool.get(i);
                         avg_latitude += school.getLatitude();
                         avg_longitude += school.getLongitude();
-                        drawmarker(school.getId(), new LatLng(school.getLatitude(), school.getLongitude()), school.getRate());
+                        drawmarker(school.getId(), new LatLng(school.getLatitude(), school.getLongitude()), 50);
                     }
                     if (listSchool.size() > 0) {
                         save(responseData, "schoolList");
@@ -183,7 +186,8 @@ public class MainActivity extends AppCompatActivity {
             lv_exit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    sharedHelper.clear();
+                    logout();
+                    sharedHelper.clearPerson();
                     finish();
                 }
             });
@@ -194,16 +198,27 @@ public class MainActivity extends AppCompatActivity {
                 public boolean onMarkerClick(Marker marker) {
                     Intent intent = new Intent(getApplicationContext(), LookDevice.class);
                     intent.putExtra("schoolid", marker.getTitle());
+                    System.out.println("marker: " + marker.getTitle());
                     startActivity(intent);
                     return false;
                 }
             });
         }
         if (isFirstSearch) {
-            OkHttp okHttp = new OkHttp(getApplicationContext(), mHandler);
-            if(isOfficial) school = "1";
-            RequestBody requestBody = new FormBody.Builder().add("school", school).add("userid", userid).build();
-            okHttp.postDataFromInternet(applyUrl, requestBody);
+//            OkHttp okHttp = new OkHttp(getApplicationContext(), mHandler);
+//            if(isOfficial) school = "1";
+//            RequestBody requestBody = new FormBody.Builder().add("school", school).add("userid", userid).build();
+//            okHttp.postDataFromInternet(applyUrl, requestBody);
+
+            SharedPreferences pref = getSharedPreferences("person", MODE_PRIVATE);
+            String loginid = pref.getString("loginid", "");
+            String url = getUrl2("http://47.107.37.50:8000/get_school_list/", getUrl1("loginid", loginid));
+            System.out.println("schoollist的url为：" + url);
+
+            getschool_list(url);
+
+
+
         }
         mapView.onResume();
         requestLocation();//开始定位
@@ -293,4 +308,85 @@ public class MainActivity extends AppCompatActivity {
         fileCache.saveInCacheDir(data, filename);
     }
 
+
+
+    // ToDo zouyun登出
+    public void logout(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    SharedPreferences pref = getSharedPreferences("mycookie", MODE_PRIVATE);
+                    String sessionid = pref.getString("sessionid", " ");
+
+                    OkHttpClient client = new OkHttpClient();
+                    Request request = new Request.Builder().addHeader("cookie", sessionid).url("http://47.107.37.50:8000/logout").build();
+                    Response response = client.newCall(request).execute();
+                    String responsedata = response.body().string();
+                    System.out.println("登出：" + responsedata);
+                }catch(Exception e){
+
+                }
+            }
+        }).start();
+    }
+
+    // ToDo zouyun获取学校列表
+    public void getschool_list(final String url){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    SharedPreferences pref = getSharedPreferences("mycookie", MODE_PRIVATE);
+                    String sessionid = pref.getString("sessionid", " ");
+
+                    OkHttpClient client = new OkHttpClient();
+                    Request request = new Request.Builder().addHeader("cookie",sessionid).url(url).build();
+                    Response response = client.newCall(request).execute();
+                    String responsedata = response.body().string();
+                    System.out.println("学校列表：" + responsedata);
+                    if(response.isSuccessful()){
+                        Message message = new Message();
+                        message.what = 0x2017;
+                        message.obj = responsedata;
+                        mHandler.sendMessage(message);
+                    }else{
+
+                    }
+                }catch(Exception e){
+
+                }
+            }
+        }).start();
+    }
+
+    // ToDo zouyun 携带信息get请求的url的转换方法1
+    public static HashMap<String, String> getUrl1(String key1, String value1){
+        HashMap hashmap = new HashMap();
+        hashmap.put(key1, value1);
+        return hashmap;
+    }
+    // ToDo zouyun携带信息get请求的url的转换方法2
+    public static String getUrl2(String actionUrl, HashMap<String, String> paramsMap) {
+        StringBuilder myBuilder = new StringBuilder();
+        String a = null;
+        try {
+            //处理参数
+            int pos = 0;
+            for(String key : paramsMap.keySet()) {
+                if (pos > 0) {
+                    myBuilder.append("&");
+                }
+                //对参数进行URLEncoder
+                myBuilder.append(String.format("%s=%s", key, URLEncoder.encode(paramsMap.get(key), "utf-8")));
+                pos++;
+            }
+            //补全请求地址
+            String requestUrl = String.format("%s?%s", actionUrl, myBuilder.toString());
+            a = requestUrl;
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+        return a;
+    }
 }

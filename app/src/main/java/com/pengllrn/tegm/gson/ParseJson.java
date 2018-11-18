@@ -89,17 +89,18 @@ public class ParseJson {
     public List<School> SchoolPoint(String json) {
         List<School> listSchool=new ArrayList<School>();
         try {
-            JSONArray jsonArray=new JSONArray(json);
+            JSONObject jsonObject= new JSONObject(json);
+            JSONArray jsonArray = jsonObject.getJSONArray("school_list");
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jObject=jsonArray.getJSONObject(i);
                 String id=jObject.getString("schoolid");
                 String schoolname=jObject.getString("schoolname");
                 Double longitude=jObject.getDouble("longitude");
                 Double latitude = jObject.getDouble("latitude");
-                int rate = jObject.getInt("rate");
-                String totaldevice = jObject.getString("totaldevice");
-                String usingdevice = jObject.getString("usingdevice");
-                listSchool.add(new School(id,schoolname,longitude,latitude,rate,totaldevice,usingdevice));
+//                int rate = jObject.getInt("rate");
+//                String totaldevice = jObject.getString("totaldevice");
+//                String usingdevice = jObject.getString("usingdevice");
+                listSchool.add(new School(id,schoolname,longitude,latitude));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -126,6 +127,11 @@ public class ParseJson {
         }
         return listApply;
     }
+
+
+    //Todo zouyun
+
+
 
 
 }

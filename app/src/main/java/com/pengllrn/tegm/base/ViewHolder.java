@@ -69,6 +69,13 @@ public class ViewHolder {
         return this;
     }
 
+    //zouyun
+    public void  setColor(int viewId, String a){
+        TextView tv = getView(viewId);
+        tv.setTextColor(Color.parseColor(a));
+    }
+
+
     public ViewHolder setImageResource(int viewId,int resId){
         ImageView view = getView(viewId);
         view.setImageResource(resId);

@@ -27,6 +27,6 @@ public class BuildingListAdapter extends ListViewAdapter<BuildingList> {
         holder.setText(R.id.item1,buildingList.getBuildingname());
         holder.setText(R.id.item2,buildingList.getTotaldevice());
         holder.setText(R.id.item3,buildingList.getUsingdevice());
-        holder.setText(R.id.item4,"--");
+        holder.setText(R.id.item4,"");
     }
 }

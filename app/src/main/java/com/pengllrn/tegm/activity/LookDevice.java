@@ -34,6 +34,7 @@ public class LookDevice extends AppCompatActivity {
         }
         Intent intent = getIntent();
         String schoolid=intent.getStringExtra("schoolid");
+        System.out.println("LookDevice的schoolid：" + schoolid);
 
         //初始化fragment
         if(schoolid != null && !schoolid.equals("") ){//是什么？

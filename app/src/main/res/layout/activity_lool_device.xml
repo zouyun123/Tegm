@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/frame_zouyun"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical">
@@ -29,6 +30,7 @@
             android:gravity="center_vertical"
             android:background="@color/white_255">
             <TextView
+                android:id="@+id/text1_zouyun"
                 android:layout_width="0dp"
                 android:layout_weight="7"
                 android:layout_height="wrap_content"
@@ -41,6 +43,7 @@
                 android:layout_margin="8dp"
                 android:background="@color/divider_line"/>
             <TextView
+                android:id="@+id/text2_zouyun"
                 android:layout_width="0dp"
                 android:layout_weight="5"
                 android:layout_height="wrap_content"
@@ -53,6 +56,7 @@
                 android:layout_margin="8dp"
                 android:background="@color/divider_line"/>
             <TextView
+                android:id="@+id/text3_zouyun"
                 android:layout_width="0dp"
                 android:layout_weight="5"
                 android:layout_height="wrap_content"
@@ -66,6 +70,7 @@
                 android:layout_margin="8dp"
                 android:background="@color/divider_line"/>
             <TextView
+                android:id="@+id/text4_zouyun"
                 android:layout_width="0dp"
                 android:layout_weight="4"
                 android:layout_height="wrap_content"

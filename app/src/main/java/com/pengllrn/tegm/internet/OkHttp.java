@@ -41,6 +41,7 @@ public class OkHttp {
     private Handler handler;
     private Context mContext;
 
+
     public OkHttp(Context context, Handler handler) {
         this.mContext = context;
         this.handler = handler;
@@ -64,17 +65,20 @@ public class OkHttp {
                         msg.what = POSTOK;
                         msg.obj = responseData;
                         handler.sendMessage(msg);
+                        System.out.println("网络成功");
                     } else {
                         //TODO 错误报告
                         Message msg = new Message();
                         msg.what = WRANG;
                         handler.sendMessage(msg);
+                        System.out.println("网络请求失败");
                     }
                 } catch (IOException e) {
                     Message msg = new Message();
                     msg.what = EXCEPTION;
                     handler.sendMessage(msg);
                     e.printStackTrace();
+                    System.out.println("网络请求异常");
                 }
             }
         }).start();
@@ -235,4 +239,33 @@ public class OkHttp {
             }
         }).start();
     }
+
+
+
+    //zouyun
+    public void getHttp(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    OkHttpClient client = new OkHttpClient();
+                    Request request = new Request.Builder().get().url("http://47.107.37.50:8000/get_school_list?loginid=zouyun").build();
+                    Response response = client.newCall(request).execute();
+                    String responsedata = response.body().string();
+                    System.out.println(responsedata);
+                    if(response.isSuccessful()){
+                        System.out.println("获取成功");
+                    }else{
+                        System.out.println("获取失败");
+                    }
+                }catch(Exception e){
+                    System.out.println("获取异常");
+                }
+            }
+        }).start();
+    }
+
+
+
+
 }

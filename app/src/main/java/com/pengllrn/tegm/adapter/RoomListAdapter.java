@@ -27,6 +27,6 @@ public class RoomListAdapter extends ListViewAdapter<RoomList> {
         holder.setText(R.id.item1,roomList.getRoomname());
         holder.setText(R.id.item2,roomList.getTotaldevice());
         holder.setText(R.id.item3,roomList.getUsingdevice());
-        holder.setText(R.id.item4,"--");
+        holder.setText(R.id.item4,"");
     }
 }

@@ -14,7 +14,11 @@ public class School {
     private String totaldevice;
     private String usingdevice;
 
-    public School(String id, String schoolname, Double longitude, Double latitude,int rate,String totaldevice,String usingdevice) {
+    public School(){
+
+    }
+
+    public School(String id, String schoolname, Double longitude, Double latitude) {
         this.schoolid = id;
         this.schoolname = schoolname;
         this.longitude = longitude;
@@ -23,6 +27,16 @@ public class School {
         this.totaldevice = totaldevice;
         this.usingdevice = usingdevice;
     }
+
+    //zouyun 构造方法
+    public School(String schoolid,String schoolname, String usingdevice, String totaldevice, int rate) {
+        this.schoolid = schoolid;
+        this.schoolname = schoolname;
+        this.totaldevice = totaldevice;
+        this.usingdevice = usingdevice;
+        this.rate = rate;
+    }
+
 
     public String getId() {
         return schoolid;
@@ -50,5 +64,18 @@ public class School {
 
     public String getUsingdevice() {
         return usingdevice;
+    }
+
+    public void setRate(int a){
+        this.rate = a;
+    }
+    public void setTotaldevice(String totaldevice){
+        this.totaldevice = totaldevice;
+    }
+    public void setUsingdevice(String usingdevice){
+        this.usingdevice = usingdevice;
+    }
+    public void setSchoolname(String schoolname){
+        this.schoolname = schoolname;
     }
 }
